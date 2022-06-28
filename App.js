@@ -9,8 +9,23 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import ExpensesScreen from './screens/ExpensesScreen'
 import ManageExpense from './screens/ManageExpense'
 
+import { GlobalStyles } from './constants/styles'
+
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
+
+const screenStyleOptions = {
+    headerStyle: { backgroundColor: GlobalStyles.colors.primary500 },
+    headerTintColor: 'white',
+}
+
+const tabScreenOptions = {
+    ...screenStyleOptions,
+    tabBarStyle: {
+        backgroundColor: GlobalStyles.colors.primary500,
+    },
+    tabBarActiveTintColor: GlobalStyles.colors.accent500,
+}
 
 function getDrawerIconFunction(iconName) {
     return ({ color, size }) => (
@@ -20,7 +35,7 @@ function getDrawerIconFunction(iconName) {
 
 function TabNavigator() {
     return (
-        <Tab.Navigator>
+        <Tab.Navigator screenOptions={tabScreenOptions}>
             <Tab.Screen
                 name="recentExpenses"
                 component={ExpensesScreen}
@@ -46,7 +61,7 @@ function TabNavigator() {
 export default function App() {
     return (
         <>
-            <StatusBar style="auto" />
+            <StatusBar style="light" />
             <NavigationContainer>
                 <Stack.Navigator initialRouteName="TabNavigator">
                     <Stack.Screen
