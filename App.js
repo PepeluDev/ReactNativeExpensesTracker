@@ -27,7 +27,7 @@ const tabScreenOptions = {
     tabBarActiveTintColor: GlobalStyles.colors.accent500,
 }
 
-function getDrawerIconFunction(iconName) {
+function getTabIcon(iconName) {
     return ({ color, size }) => (
         <Ionicons name={iconName} color={color} size={size} />
     )
@@ -42,7 +42,7 @@ function TabNavigator() {
                 options={{
                     title: 'Recent Expenses',
                     tabBarLabel: 'Recent',
-                    tabBarIcon: getDrawerIconFunction('hourglass'),
+                    tabBarIcon: getTabIcon('hourglass'),
                 }}
             />
             <Tab.Screen
@@ -51,7 +51,7 @@ function TabNavigator() {
                 options={{
                     title: 'All Expenses',
                     tabBarLabel: 'All',
-                    tabBarIcon: getDrawerIconFunction('calendar'),
+                    tabBarIcon: getTabIcon('calendar'),
                 }}
             />
         </Tab.Navigator>
