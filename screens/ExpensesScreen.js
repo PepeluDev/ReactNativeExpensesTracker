@@ -5,28 +5,28 @@ import IconButton from '../components/ui/IconButton'
 import { GlobalStyles } from '../constants/styles'
 
 const expenses = [
-    { id: 0, intemName: 'mouse', date: new Date(), amount: 25 },
-    { id: 1, intemName: 'keyboard', date: new Date(), amount: 35 },
-    { id: 2, intemName: 'screen', date: new Date(), amount: 250 },
-    { id: 3, intemName: 'speakers', date: new Date(), amount: 150.89 },
-    { id: 4, intemName: 'computer', date: new Date(), amount: 1050.5 },
-    { id: 5, intemName: 'mouse', date: new Date('2021-12-01'), amount: 25 },
+    { id: 0, itemName: 'mouse', date: new Date(), amount: 25 },
+    { id: 1, itemName: 'keyboard', date: new Date(), amount: 35 },
+    { id: 2, itemName: 'screen', date: new Date(), amount: 250 },
+    { id: 3, itemName: 'speakers', date: new Date(), amount: 150.89 },
+    { id: 4, itemName: 'computer', date: new Date(), amount: 1050.5 },
+    { id: 5, itemName: 'mouse', date: new Date('2021-12-01'), amount: 25 },
     {
         id: 6,
-        intemName: 'keyboard',
+        itemName: 'keyboard',
         date: new Date('2021-12-01'),
         amount: 35.67,
     },
-    { id: 7, intemName: 'screen', date: new Date('2021-12-01'), amount: 250 },
+    { id: 7, itemName: 'screen', date: new Date('2021-12-01'), amount: 250 },
     {
         id: 8,
-        intemName: 'speakers',
+        itemName: 'speakers',
         date: new Date('2021-12-01'),
         amount: 150.89,
     },
     {
         id: 9,
-        intemName: 'computer',
+        itemName: 'computer',
         date: new Date('2021-12-01'),
         amount: 1050.5,
     },
@@ -34,7 +34,9 @@ const expenses = [
 
 const ExpensesScreen = ({ navigation }) => {
     function openAddExpenseScreen() {
-        console.log('opening add expense screen')
+        navigation.navigate('ManageExpense', {
+            itemName: 'New Expense',
+        })
     }
 
     useLayoutEffect(() => {
