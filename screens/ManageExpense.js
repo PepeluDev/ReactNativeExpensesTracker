@@ -1,7 +1,15 @@
+import { useLayoutEffect } from 'react'
 import { View, StyleSheet, Text } from 'react-native'
 
-const ManageExpense = ({ route }) => {
-    const expenseItemName = route.params.itemName
+const ManageExpense = ({ route, navigation }) => {
+    const expenseItemName = route.params?.itemName
+    const isAdding = !expenseItemName
+
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            title: isAdding ? 'Add new Expense' : expenseItemName,
+        })
+    }, [isAdding, navigation])
 
     return (
         <View style={styles.rootContainer}>

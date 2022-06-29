@@ -34,9 +34,7 @@ const expenses = [
 
 const ExpensesScreen = ({ navigation }) => {
     function openAddExpenseScreen() {
-        navigation.navigate('ManageExpense', {
-            itemName: 'New Expense',
-        })
+        navigation.navigate('ManageExpense')
     }
 
     useLayoutEffect(() => {
@@ -50,7 +48,7 @@ const ExpensesScreen = ({ navigation }) => {
                 />
             ),
         })
-    }, [])
+    }, [navigation])
 
     return (
         <View style={styles.rootContainer}>
