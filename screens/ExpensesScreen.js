@@ -1,5 +1,8 @@
 import { View, StyleSheet, Text } from 'react-native'
 import ExpensesView from '../components/expenses/ExpensesView'
+import { useLayoutEffect } from 'react'
+import IconButton from '../components/ui/IconButton'
+import { GlobalStyles } from '../constants/styles'
 
 const expenses = [
     { id: 0, intemName: 'mouse', date: new Date(), amount: 25 },
@@ -29,7 +32,24 @@ const expenses = [
     },
 ]
 
-const ExpensesScreen = () => {
+const ExpensesScreen = ({ navigation }) => {
+    function openAddExpenseScreen() {
+        console.log('opening add expense screen')
+    }
+
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            headerRight: ({ tintColor }) => (
+                <IconButton
+                    iconName="add-circle-outline"
+                    onPress={openAddExpenseScreen}
+                    color={tintColor}
+                    style={styles.headerRightButton}
+                />
+            ),
+        })
+    }, [])
+
     return (
         <View style={styles.rootContainer}>
             <ExpensesView expenses={expenses} timeRange="Last 7 days" />
@@ -41,6 +61,7 @@ const styles = StyleSheet.create({
     rootContainer: {
         flex: 1,
     },
+    headerRightButton: { marginRight: 10 },
 })
 
 export default ExpensesScreen
