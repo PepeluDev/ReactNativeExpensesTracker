@@ -63,10 +63,16 @@ export default function App() {
         <>
             <StatusBar style="light" />
             <NavigationContainer>
-                <Stack.Navigator initialRouteName="TabNavigator">
+                <Stack.Navigator
+                    initialRouteName="TabNavigator"
+                    screenOptions={screenStyleOptions}
+                >
                     <Stack.Screen
                         name="ManageExpense"
                         component={ManageExpense}
+                        options={{
+                            presentation: 'modal',
+                        }}
                     />
                     <Stack.Screen
                         name="TabNavigator"
