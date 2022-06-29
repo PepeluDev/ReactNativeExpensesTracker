@@ -1,21 +1,32 @@
-import { View, StyleSheet, Text } from 'react-native'
+import { View, StyleSheet, Text, Pressable } from 'react-native'
 import { GlobalStyles } from '../../constants/styles'
 
 const ExpenseItem = ({ intemName, date, amount }) => {
+    function onPressHandler() {
+        console.log(intemName + ' PRESSED!')
+    }
     return (
-        <View style={styles.rootContainer}>
-            <View>
-                <Text>{intemName}</Text>
-                <Text style={styles.dateText}>{date.toDateString()}</Text>
+        <Pressable
+            onPress={onPressHandler}
+            style={({ pressed }) => pressed && styles.pressed}
+        >
+            <View style={styles.rootContainer}>
+                <View>
+                    <Text>{intemName}</Text>
+                    <Text style={styles.dateText}>{date.toDateString()}</Text>
+                </View>
+                <View style={styles.amoutContainer}>
+                    <Text>${amount.toFixed(2)}</Text>
+                </View>
             </View>
-            <View style={styles.amoutContainer}>
-                <Text>${amount.toFixed(2)}</Text>
-            </View>
-        </View>
+        </Pressable>
     )
 }
 
 const styles = StyleSheet.create({
+    pressed: {
+        opacity: 0.7,
+    },
     rootContainer: {
         marginVertical: 10,
         padding: 10,
