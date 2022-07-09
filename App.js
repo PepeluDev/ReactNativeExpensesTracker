@@ -27,6 +27,11 @@ const tabScreenOptions = {
     tabBarActiveTintColor: GlobalStyles.colors.accent500,
 }
 
+const stackScreenOptions = {
+    ...screenStyleOptions,
+    contentStyle: { backgroundColor: GlobalStyles.colors.primary100 },
+}
+
 function getTabIcon(iconName) {
     return ({ color, size }) => (
         <Ionicons name={iconName} color={color} size={size} />
@@ -65,7 +70,7 @@ export default function App() {
             <NavigationContainer>
                 <Stack.Navigator
                     initialRouteName="TabNavigator"
-                    screenOptions={screenStyleOptions}
+                    screenOptions={stackScreenOptions}
                 >
                     <Stack.Screen
                         name="ManageExpense"
