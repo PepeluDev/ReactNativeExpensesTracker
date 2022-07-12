@@ -1,5 +1,6 @@
 import { useLayoutEffect } from 'react'
 import { View, StyleSheet, Text } from 'react-native'
+import Button from '../components/ui/Button'
 import IconButton from '../components/ui/IconButton'
 
 const ManageExpense = ({ route, navigation }) => {
@@ -16,20 +17,30 @@ const ManageExpense = ({ route, navigation }) => {
         navigation.goBack()
     }
 
+    function cancelHandler() {
+        navigation.goBack()
+    }
+
+    function confirmHandler() {
+        navigation.goBack()
+    }
+
     function editExpenseHandler() {}
 
     if (!isAdding) {
         return (
             <View style={styles.rootContainer}>
-                <View style={styles.textView}>
-                    <Text style={styles.textDescription}>
-                        This is the ManageExpense screen for:{' '}
-                    </Text>
-                    <Text
-                        style={[styles.textDescription, styles.expenseItemName]}
+                <View style={styles.buttonView}>
+                    <Button
+                        mode="flat"
+                        onPress={cancelHandler}
+                        style={styles.button}
                     >
-                        {expenseItemName}
-                    </Text>
+                        Cancel
+                    </Button>
+                    <Button onPress={confirmHandler} style={styles.button}>
+                        {isAdding ? 'Add' : 'Update'}
+                    </Button>
                 </View>
                 <View style={styles.buttonContainer}>
                     <IconButton
@@ -55,9 +66,15 @@ const styles = StyleSheet.create({
         flex: 1,
         alignContent: 'center',
     },
-    textView: {
+    buttonView: {
         paddingTop: 10,
+        justifyContent: 'center',
         alignItems: 'center',
+        flexDirection: 'row',
+    },
+    button: {
+        minWidth: 120,
+        marginHorizontal: 8,
     },
     textDescription: {
         fontSize: 20,
