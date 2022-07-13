@@ -23,6 +23,10 @@ const ExpensesScreen = ({ route, navigation }) => {
             : expensesCtx.expenses
 
     const periodTitle = period && period === 'recent' ? 'Last 7 days' : 'All'
+    const fallbackText =
+        period && period === 'recent'
+            ? "You haven't added any expense for the last 7 days"
+            : 'No expenses found!'
 
     function openAddExpenseScreen() {
         navigation.navigate('ManageExpense')
@@ -43,7 +47,11 @@ const ExpensesScreen = ({ route, navigation }) => {
 
     return (
         <View style={styles.rootContainer}>
-            <ExpensesView expenses={expensesData} timeRange={periodTitle} />
+            <ExpensesView
+                expenses={expensesData}
+                fallbackText={fallbackText}
+                timeRange={periodTitle}
+            />
         </View>
     )
 }
