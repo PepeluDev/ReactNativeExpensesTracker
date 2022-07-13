@@ -10,6 +10,7 @@ import ExpensesScreen from './screens/ExpensesScreen'
 import ManageExpense from './screens/ManageExpense'
 
 import { GlobalStyles } from './constants/styles'
+import ExpensesContextProvider from './store/context/expenses-context'
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -67,27 +68,29 @@ export default function App() {
     return (
         <>
             <StatusBar style="light" />
-            <NavigationContainer>
-                <Stack.Navigator
-                    initialRouteName="TabNavigator"
-                    screenOptions={stackScreenOptions}
-                >
-                    <Stack.Screen
-                        name="ManageExpense"
-                        component={ManageExpense}
-                        options={{
-                            presentation: 'modal',
-                        }}
-                    />
-                    <Stack.Screen
-                        name="TabNavigator"
-                        component={TabNavigator}
-                        options={{
-                            headerShown: false,
-                        }}
-                    />
-                </Stack.Navigator>
-            </NavigationContainer>
+            <ExpensesContextProvider>
+                <NavigationContainer>
+                    <Stack.Navigator
+                        initialRouteName="TabNavigator"
+                        screenOptions={stackScreenOptions}
+                    >
+                        <Stack.Screen
+                            name="ManageExpense"
+                            component={ManageExpense}
+                            options={{
+                                presentation: 'modal',
+                            }}
+                        />
+                        <Stack.Screen
+                            name="TabNavigator"
+                            component={TabNavigator}
+                            options={{
+                                headerShown: false,
+                            }}
+                        />
+                    </Stack.Navigator>
+                </NavigationContainer>
+            </ExpensesContextProvider>
         </>
     )
 }

@@ -2,12 +2,13 @@ import { View, StyleSheet, Text, Pressable } from 'react-native'
 import { GlobalStyles } from '../../constants/styles'
 import { useNavigation } from '@react-navigation/native'
 
-const ExpenseItem = ({ itemName, date, amount }) => {
+const ExpenseItem = ({ id, itemName, date, amount }) => {
     const navigation = useNavigation()
 
     function onPressHandler() {
         navigation.navigate('ManageExpense', {
             itemName: itemName,
+            itemId: id,
         })
     }
     return (
