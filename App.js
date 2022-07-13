@@ -45,6 +45,7 @@ function TabNavigator() {
             <Tab.Screen
                 name="recentExpenses"
                 component={ExpensesScreen}
+                initialParams={{ period: 'recent' }}
                 options={{
                     title: 'Recent Expenses',
                     tabBarLabel: 'Recent',

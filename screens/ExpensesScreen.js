@@ -5,8 +5,24 @@ import IconButton from '../components/ui/IconButton'
 
 import { ExpensesContext } from '../store/context/expenses-context'
 
-const ExpensesScreen = ({ navigation }) => {
+function getDateMinusDays(date, days) {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate() - days)
+}
+
+const ExpensesScreen = ({ route, navigation }) => {
     const expensesCtx = useContext(ExpensesContext)
+    const period = route.params?.period
+
+    const expensesData =
+        period && period === 'recent'
+            ? expensesCtx.expenses.filter((expense) => {
+                  const today = new Date()
+                  const date7DaysAgo = getDateMinusDays(today, 7)
+                  return expense.date >= date7DaysAgo && expense.date <= today
+              })
+            : expensesCtx.expenses
+
+    const periodTitle = period && period === 'recent' ? 'Last 7 days' : 'All'
 
     function openAddExpenseScreen() {
         navigation.navigate('ManageExpense')
@@ -27,10 +43,7 @@ const ExpensesScreen = ({ navigation }) => {
 
     return (
         <View style={styles.rootContainer}>
-            <ExpensesView
-                expenses={expensesCtx.expenses}
-                timeRange="Last 7 days"
-            />
+            <ExpensesView expenses={expensesData} timeRange={periodTitle} />
         </View>
     )
 }
