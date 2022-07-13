@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react'
+import { createContext, useReducer } from 'react'
 
 export const ExpensesContext = createContext({
     expenses: [],
@@ -7,77 +7,89 @@ export const ExpensesContext = createContext({
     updateExpense: (id, { description, amount }) => {},
 })
 
-const ExpensesContextProvider = ({ children }) => {
-    const [expenses, setExpenses] = useState([
-        { id: 0, itemName: 'mouse', date: new Date(), amount: 25 },
-        { id: 1, itemName: 'keyboard', date: new Date(), amount: 35 },
-        { id: 2, itemName: 'screen', date: new Date(), amount: 250 },
-        { id: 3, itemName: 'speakers', date: new Date(), amount: 150.89 },
-        { id: 4, itemName: 'computer', date: new Date(), amount: 1050.5 },
-        { id: 5, itemName: 'mouse', date: new Date('2021-12-01'), amount: 25 },
-        {
-            id: 6,
-            itemName: 'keyboard',
-            date: new Date('2021-12-01'),
-            amount: 35.67,
-        },
-        {
-            id: 7,
-            itemName: 'screen',
-            date: new Date('2021-12-01'),
-            amount: 250,
-        },
-        {
-            id: 8,
-            itemName: 'speakers',
-            date: new Date('2021-12-01'),
-            amount: 150.89,
-        },
-        {
-            id: 9,
-            itemName: 'computer',
-            date: new Date('2021-12-01'),
-            amount: 1050.5,
-        },
-    ])
+const EXPENSES_INITIAL_DATA = [
+    { id: 0, itemName: 'mouse', date: new Date(), amount: 25 },
+    { id: 1, itemName: 'keyboard', date: new Date(), amount: 35 },
+    { id: 2, itemName: 'screen', date: new Date(), amount: 250 },
+    { id: 3, itemName: 'speakers', date: new Date(), amount: 150.89 },
+    { id: 4, itemName: 'computer', date: new Date(), amount: 1050.5 },
+    { id: 5, itemName: 'mouse', date: new Date('2021-12-01'), amount: 25 },
+    {
+        id: 6,
+        itemName: 'keyboard',
+        date: new Date('2021-12-01'),
+        amount: 35.67,
+    },
+    {
+        id: 7,
+        itemName: 'screen',
+        date: new Date('2021-12-01'),
+        amount: 250,
+    },
+    {
+        id: 8,
+        itemName: 'speakers',
+        date: new Date('2021-12-01'),
+        amount: 150.89,
+    },
+    {
+        id: 9,
+        itemName: 'computer',
+        date: new Date('2021-12-01'),
+        amount: 1050.5,
+    },
+]
 
-    function addExpense({ description, amount }) {
-        const date = new Date()
-        const id = date.toString() + Math.random.toString()
-        const newExpense = {
-            id: id,
-            description: description,
-            amount: amount,
-            date: date,
-        }
-        setExpenses((currentExpenses) => [...currentExpenses, newExpense])
+function expensesReducer(state, action) {
+    switch (action.type) {
+        case 'ADD':
+            const date = new Date()
+            const id = date.toString() + Math.random.toString()
+            return [{ id: id, date: date, ...action.payload.data }, ...state]
+        case 'REMOVE':
+            return state.filter((expense) => expense.id !== action.payload.id)
+        case 'UPDATE':
+            const updatableExpenseIndex = expenses.findIndex(
+                (expense) => expense.id === id
+            )
+            const updatableExpense = expenses[updatableExpenseIndex]
+            const updatedExpense = {
+                ...updatableExpense,
+                ...action.payload.data,
+                date: new date(),
+            }
+            // Do everything the inmutable way
+            const updatedExpenses = [...state]
+            updatedExpenses[updatableExpenseIndex] = updatedExpense
+            return updatedExpenses
+        default:
+            return state
     }
+}
 
-    function updateExpense(id, { description, amount }) {
-        const updatableExpenseIndex = expenses.findIndex(
-            (expense) => expense.id === id
-        )
-        const updatableExpense = expenses[updatableExpenseIndex]
-        const updatedExpense = {
-            ...updatableExpense,
-            description: description,
-            amount: amount,
-            date: new date(),
-        }
-        setExpenses((currentExpenses) => {
-            currentExpenses.splice(updatableExpenseIndex, 1, updatableExpense)
-            return currentExpenses
-        })
+const ExpensesContextProvider = ({ children }) => {
+    const [expensesState, dispatch] = useReducer(
+        expensesReducer,
+        EXPENSES_INITIAL_DATA
+    )
+
+    function addExpense(expenseData) {
+        dispatch({ type: 'ADD', payload: { data: expenseData } })
     }
 
     function removeExpense(expenseId) {
-        setExpenses((currentExpenses) =>
-            currentExpenses.filter((expense) => expense.id !== expenseId)
-        )
+        dispatch({ type: 'REMOVE', payload: { id: expenseId } })
+    }
+
+    function updateExpense(expenseId, expenseData) {
+        dispatch({
+            type: 'UPDATE',
+            payload: { id: expenseId, data: expenseData },
+        })
     }
 
     const value = {
-        expenses: expenses,
+        expenses: expensesState,
         addExpense: addExpense,
         removeExpense: removeExpense,
         updateExpense: updateExpense,
