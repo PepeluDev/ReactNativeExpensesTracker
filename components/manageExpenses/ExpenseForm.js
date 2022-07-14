@@ -1,10 +1,19 @@
+import { useState } from 'react'
 import { View, StyleSheet, Text } from 'react-native'
 import Input from './Input'
 
-const ExpenseForm = (style) => {
-    function amountChangedHandler() {}
-    function dateChangedHandler() {}
-    function descriptionChangedHandler() {}
+const ExpenseForm = ({ style }) => {
+    const [inputData, setInputData] = useState({
+        amount: '',
+        date: '',
+        description: '',
+    })
+
+    function inputChangedHandler(inputIdentifier, enteredValue) {
+        setInputData((currentInputdata) => {
+            return { ...currentInputdata, [inputIdentifier]: enteredValue }
+        })
+    }
 
     return (
         <View style={[styles.rootContainer, style]}>
@@ -15,7 +24,8 @@ const ExpenseForm = (style) => {
                     label="Amount"
                     textInputConfig={{
                         keyboardType: 'decimal-pad',
-                        onChangeText: amountChangedHandler,
+                        onChangeText: inputChangedHandler.bind(this, 'amount'),
+                        value: inputData.amount,
                     }}
                 />
                 <Input
@@ -24,7 +34,8 @@ const ExpenseForm = (style) => {
                     textInputConfig={{
                         placeholder: 'YYYY-MM-DD',
                         maxLength: 10,
-                        onChangeText: dateChangedHandler,
+                        onChangeText: inputChangedHandler.bind(this, 'date'),
+                        value: inputData.date,
                     }}
                 />
             </View>
@@ -34,7 +45,8 @@ const ExpenseForm = (style) => {
                     multiline: true,
                     // autoCorrect: false, // true by default
                     // autoCapitalize: 'none', // sentences by default
-                    onChangeText: descriptionChangedHandler,
+                    onChangeText: inputChangedHandler.bind(this, 'description'),
+                    value: inputData.description,
                 }}
             />
         </View>
