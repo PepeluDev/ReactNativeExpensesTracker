@@ -1,5 +1,6 @@
 import { useLayoutEffect, useContext } from 'react'
 import { View, StyleSheet, Text } from 'react-native'
+import ExpenseForm from '../components/manageExpenses/ExpenseForm'
 import Button from '../components/ui/Button'
 import IconButton from '../components/ui/IconButton'
 
@@ -34,21 +35,24 @@ const ManageExpense = ({ route, navigation }) => {
 
     function editExpenseHandler() {}
 
-    if (!isAdding) {
-        return (
-            <View style={styles.rootContainer}>
-                <View style={styles.buttonView}>
-                    <Button
-                        mode="flat"
-                        onPress={cancelHandler}
-                        style={styles.button}
-                    >
-                        Cancel
-                    </Button>
-                    <Button onPress={confirmHandler} style={styles.button}>
-                        {isAdding ? 'Add' : 'Update'}
-                    </Button>
-                </View>
+    return (
+        <View style={styles.rootContainer}>
+            <View style={styles.expenseFormView}>
+                <ExpenseForm />
+            </View>
+            <View style={styles.buttonView}>
+                <Button
+                    mode="flat"
+                    onPress={cancelHandler}
+                    style={styles.button}
+                >
+                    Cancel
+                </Button>
+                <Button onPress={confirmHandler} style={styles.button}>
+                    {isAdding ? 'Add' : 'Update'}
+                </Button>
+            </View>
+            {!isAdding && (
                 <View style={styles.buttonContainer}>
                     <IconButton
                         iconName="trash"
@@ -57,13 +61,7 @@ const ManageExpense = ({ route, navigation }) => {
                         size={50}
                     />
                 </View>
-            </View>
-        )
-    }
-
-    return (
-        <View style={styles.rootContainer}>
-            <Text>Adding new Expense</Text>
+            )}
         </View>
     )
 }
@@ -72,6 +70,9 @@ const styles = StyleSheet.create({
     rootContainer: {
         flex: 1,
         alignContent: 'center',
+    },
+    expenseFormView: {
+        paddingHorizontal: 16,
     },
     buttonView: {
         paddingTop: 10,
