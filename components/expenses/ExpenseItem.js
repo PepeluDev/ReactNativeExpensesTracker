@@ -2,12 +2,12 @@ import { View, StyleSheet, Text, Pressable } from 'react-native'
 import { GlobalStyles } from '../../constants/styles'
 import { useNavigation } from '@react-navigation/native'
 
-const ExpenseItem = ({ id, itemName, date, amount }) => {
+const ExpenseItem = ({ id, description, date, amount }) => {
     const navigation = useNavigation()
 
     function onPressHandler() {
         navigation.navigate('ManageExpense', {
-            itemName: itemName,
+            description: description,
             itemId: id,
         })
     }
@@ -18,7 +18,7 @@ const ExpenseItem = ({ id, itemName, date, amount }) => {
         >
             <View style={styles.rootContainer}>
                 <View>
-                    <Text>{itemName}</Text>
+                    <Text>{description}</Text>
                     <Text style={styles.dateText}>{date.toDateString()}</Text>
                 </View>
                 <View style={styles.amoutContainer}>

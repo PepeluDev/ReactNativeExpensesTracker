@@ -8,7 +8,7 @@ import { ExpensesContext } from '../store/context/expenses-context'
 const ManageExpense = ({ route, navigation }) => {
     const expensesCtx = useContext(ExpensesContext)
 
-    const expenseItemName = route.params?.itemName
+    const expenseItemName = route.params?.description
     const expenseItemId = route.params?.itemId
 
     const isAdding = !expenseItemName && !expenseItemId
