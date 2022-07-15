@@ -2,9 +2,9 @@ import { createContext, useReducer } from 'react'
 
 export const ExpensesContext = createContext({
     expenses: [],
-    addExpense: ({ description, amount }) => {},
+    addExpense: ({ description, date, amount }) => {},
     removeExpense: (id) => {},
-    updateExpense: (id, { description, amount }) => {},
+    updateExpense: (id, { description, date, amount }) => {},
 })
 
 const EXPENSES_INITIAL_DATA = [
@@ -43,9 +43,8 @@ const EXPENSES_INITIAL_DATA = [
 function expensesReducer(state, action) {
     switch (action.type) {
         case 'ADD':
-            const date = new Date()
-            const id = date.toString() + Math.random.toString()
-            return [{ id: id, date: date, ...action.payload.data }, ...state]
+            const id = action.payload.date.toString() + Math.random.toString()
+            return [{ id: id, ...action.payload.data }, ...state]
         case 'REMOVE':
             return state.filter((expense) => expense.id !== action.payload.id)
         case 'UPDATE':
@@ -56,7 +55,6 @@ function expensesReducer(state, action) {
             const updatedExpense = {
                 ...updatableExpense,
                 ...action.payload.data,
-                date: new date(),
             }
             // Do everything the inmutable way
             const updatedExpenses = [...state]
