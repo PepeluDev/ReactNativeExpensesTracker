@@ -1,7 +1,6 @@
 import { useLayoutEffect, useContext } from 'react'
 import { View, StyleSheet, Text } from 'react-native'
 import ExpenseForm from '../components/manageExpenses/ExpenseForm'
-import Button from '../components/ui/Button'
 import IconButton from '../components/ui/IconButton'
 
 import { ExpensesContext } from '../store/context/expenses-context'
@@ -38,19 +37,10 @@ const ManageExpense = ({ route, navigation }) => {
     return (
         <View style={styles.rootContainer}>
             <View style={styles.expenseFormView}>
-                <ExpenseForm />
-            </View>
-            <View style={styles.buttonView}>
-                <Button
-                    mode="flat"
-                    onPress={cancelHandler}
-                    style={styles.button}
-                >
-                    Cancel
-                </Button>
-                <Button onPress={confirmHandler} style={styles.button}>
-                    {isAdding ? 'Add' : 'Update'}
-                </Button>
+                <ExpenseForm
+                    onCancel={cancelHandler}
+                    submitButtonLabel={isAdding ? 'Add' : 'Update'}
+                />
             </View>
             {!isAdding && (
                 <View style={styles.buttonContainer}>
@@ -73,16 +63,6 @@ const styles = StyleSheet.create({
     },
     expenseFormView: {
         paddingHorizontal: 16,
-    },
-    buttonView: {
-        paddingTop: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'row',
-    },
-    button: {
-        minWidth: 120,
-        marginHorizontal: 8,
     },
     textDescription: {
         fontSize: 20,
