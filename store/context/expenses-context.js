@@ -43,15 +43,16 @@ const EXPENSES_INITIAL_DATA = [
 function expensesReducer(state, action) {
     switch (action.type) {
         case 'ADD':
-            const id = action.payload.date.toString() + Math.random.toString()
+            const id =
+                action.payload.data.date.toString() + Math.random.toString()
             return [{ id: id, ...action.payload.data }, ...state]
         case 'REMOVE':
             return state.filter((expense) => expense.id !== action.payload.id)
         case 'UPDATE':
-            const updatableExpenseIndex = expenses.findIndex(
-                (expense) => expense.id === id
+            const updatableExpenseIndex = state.findIndex(
+                (expense) => expense.id === action.payload.id
             )
-            const updatableExpense = expenses[updatableExpenseIndex]
+            const updatableExpense = state[updatableExpenseIndex]
             const updatedExpense = {
                 ...updatableExpense,
                 ...action.payload.data,
