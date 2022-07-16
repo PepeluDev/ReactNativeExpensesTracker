@@ -28,17 +28,22 @@ const ManageExpense = ({ route, navigation }) => {
         navigation.goBack()
     }
 
-    function confirmHandler() {
+    function confirmHandler(expenseData) {
+        expensesCtx.addExpense(expenseData)
         navigation.goBack()
     }
 
-    function editExpenseHandler() {}
+    function editExpenseHandler(expenseData) {
+        expensesCtx.updateExpense(expenseItemId, expenseData)
+        navigation.goBack()
+    }
 
     return (
         <View style={styles.rootContainer}>
             <View style={styles.expenseFormView}>
                 <ExpenseForm
                     onCancel={cancelHandler}
+                    onSubmit={isAdding ? confirmHandler : editExpenseHandler}
                     submitButtonLabel={isAdding ? 'Add' : 'Update'}
                 />
             </View>
