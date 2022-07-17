@@ -4,6 +4,7 @@ import ExpenseForm from '../components/manageExpenses/ExpenseForm'
 import IconButton from '../components/ui/IconButton'
 
 import { ExpensesContext } from '../store/context/expenses-context'
+import { storeExpense } from '../util/http'
 
 const ManageExpense = ({ route, navigation }) => {
     const expensesCtx = useContext(ExpensesContext)
@@ -33,6 +34,7 @@ const ManageExpense = ({ route, navigation }) => {
     }
 
     function confirmHandler(expenseData) {
+        storeExpense(expenseData)
         expensesCtx.addExpense(expenseData)
         navigation.goBack()
     }
