@@ -1,12 +1,14 @@
-import { useLayoutEffect, useContext } from 'react'
+import { useLayoutEffect, useContext, useState } from 'react'
 import { View, StyleSheet, Text } from 'react-native'
 import ExpenseForm from '../components/manageExpenses/ExpenseForm'
 import IconButton from '../components/ui/IconButton'
 
 import { ExpensesContext } from '../store/context/expenses-context'
 import { deleteExpense, storeExpense, updateExpense } from '../util/http'
+import LoadingOverlay from '../components/ui/LoadingOverlay'
 
 const ManageExpense = ({ route, navigation }) => {
+    const [isSubmitting, setIsSubmitting] = useState(false)
     const expensesCtx = useContext(ExpensesContext)
 
     const expenseItemName = route.params?.description
@@ -25,7 +27,9 @@ const ManageExpense = ({ route, navigation }) => {
     }, [isAdding, navigation])
 
     async function deleteExpenseHandler() {
+        setIsSubmitting(true)
         await deleteExpense(expenseItemId)
+        // setIsSubmitting(false) no need because we close the screen
         expensesCtx.removeExpense(expenseItemId)
         navigation.goBack()
     }
@@ -35,15 +39,21 @@ const ManageExpense = ({ route, navigation }) => {
     }
 
     async function confirmHandler(expenseData) {
+        setIsSubmitting(true)
         const id = await storeExpense(expenseData)
         expensesCtx.addExpense({ id: id, ...expenseData })
         navigation.goBack()
     }
 
     async function editExpenseHandler(expenseData) {
+        setIsSubmitting(true)
         await updateExpense(expenseItemId, expenseData)
         expensesCtx.updateExpense(expenseItemId, expenseData)
         navigation.goBack()
+    }
+
+    if (isSubmitting) {
+        return <LoadingOverlay />
     }
 
     return (

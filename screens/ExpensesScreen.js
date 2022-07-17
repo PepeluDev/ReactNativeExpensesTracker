@@ -1,26 +1,50 @@
 import { View, StyleSheet } from 'react-native'
 import ExpensesView from '../components/expenses/ExpensesView'
-import { useLayoutEffect, useContext, useEffect } from 'react'
+import { useLayoutEffect, useContext, useEffect, useState } from 'react'
 import IconButton from '../components/ui/IconButton'
 
 import { ExpensesContext } from '../store/context/expenses-context'
 import { fetchExpenses } from '../util/http'
+import LoadingOverlay from '../components/ui/LoadingOverlay'
 
 function getDateMinusDays(date, days) {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate() - days)
 }
 
 const ExpensesScreen = ({ route, navigation }) => {
+    const [isFetching, setIsFetching] = useState(true)
+
     const expensesCtx = useContext(ExpensesContext)
     const period = route.params?.period
 
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            headerRight: ({ tintColor }) => (
+                <IconButton
+                    iconName="add-circle-outline"
+                    onPress={openAddExpenseScreen}
+                    color={tintColor}
+                    style={styles.headerRightButton}
+                />
+            ),
+        })
+    }, [navigation])
+
     useEffect(() => {
         async function getExpenses() {
+            setIsFetching(true)
             const expenses = await fetchExpenses()
+            // The server is really quick, this can be used for debugging the LoadingOverlay:
+            // await new Promise((r) => setTimeout(r, 2000))
+            setIsFetching(false)
             expensesCtx.setExpenses(expenses)
         }
         getExpenses()
     }, [])
+
+    if (isFetching) {
+        return <LoadingOverlay />
+    }
 
     const expensesData =
         period && period === 'recent'
@@ -40,19 +64,6 @@ const ExpensesScreen = ({ route, navigation }) => {
     function openAddExpenseScreen() {
         navigation.navigate('ManageExpense')
     }
-
-    useLayoutEffect(() => {
-        navigation.setOptions({
-            headerRight: ({ tintColor }) => (
-                <IconButton
-                    iconName="add-circle-outline"
-                    onPress={openAddExpenseScreen}
-                    color={tintColor}
-                    style={styles.headerRightButton}
-                />
-            ),
-        })
-    }, [navigation])
 
     return (
         <View style={styles.rootContainer}>
