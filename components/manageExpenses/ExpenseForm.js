@@ -76,7 +76,7 @@ const ExpenseForm = ({
         onSubmit({
             amount: expenseData.amount.value,
             date: expenseData.date.value,
-            description: expenseData.description.value,
+            description: expenseData.description.value.trim(),
         })
     }
 
