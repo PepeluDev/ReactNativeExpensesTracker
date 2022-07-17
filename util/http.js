@@ -9,12 +9,16 @@ export function storeExpense(expenseData) {
 export async function fetchExpenses() {
     const storedExpenses = await axios.get(BASE_URL + 'expenses.json')
 
-    return Object.keys(storedExpenses.data).map((key, index) => {
-        return {
-            id: key,
-            amount: storedExpenses.data[key].amount,
-            date: new Date(storedExpenses.data[key].date),
-            description: storedExpenses.data[key].description,
-        }
-    })
+    return Object.keys(storedExpenses.data)
+        .map((key, index) => {
+            return {
+                id: key,
+                amount: storedExpenses.data[key].amount,
+                date: new Date(storedExpenses.data[key].date),
+                description: storedExpenses.data[key].description,
+            }
+        })
+        .sort((exA, exB) => {
+            return exB.date - exA.date
+        })
 }
