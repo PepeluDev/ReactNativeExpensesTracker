@@ -33,9 +33,9 @@ const ManageExpense = ({ route, navigation }) => {
         navigation.goBack()
     }
 
-    function confirmHandler(expenseData) {
-        storeExpense(expenseData)
-        expensesCtx.addExpense(expenseData)
+    async function confirmHandler(expenseData) {
+        const id = await storeExpense(expenseData)
+        expensesCtx.addExpense({ id: id, ...expenseData })
         navigation.goBack()
     }
 

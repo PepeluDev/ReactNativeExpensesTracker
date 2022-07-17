@@ -44,9 +44,7 @@ const EXPENSES_INITIAL_DATA = [
 function expensesReducer(state, action) {
     switch (action.type) {
         case 'ADD':
-            const id =
-                action.payload.data.date.toString() + Math.random.toString()
-            return [{ id: id, ...action.payload.data }, ...state]
+            return [{ ...action.payload.data }, ...state]
         case 'SET':
             return action.payload.data
         case 'REMOVE':

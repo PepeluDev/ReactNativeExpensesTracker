@@ -2,8 +2,10 @@ import axios from 'axios'
 
 const BASE_URL = 'https://expenses-test-app-default-rtdb.firebaseio.com/'
 
-export function storeExpense(expenseData) {
-    axios.post(BASE_URL + 'expenses.json', expenseData)
+export async function storeExpense(expenseData) {
+    const response = await axios.post(BASE_URL + 'expenses.json', expenseData)
+    const id = response.data.name
+    return id
 }
 
 export async function fetchExpenses() {
