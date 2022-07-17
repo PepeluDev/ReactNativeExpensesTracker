@@ -3,6 +3,7 @@ import { createContext, useReducer } from 'react'
 export const ExpensesContext = createContext({
     expenses: [],
     addExpense: ({ description, date, amount }) => {},
+    setExpenses: (expenses) => {},
     removeExpense: (id) => {},
     updateExpense: (id, { description, date, amount }) => {},
 })
@@ -46,6 +47,8 @@ function expensesReducer(state, action) {
             const id =
                 action.payload.data.date.toString() + Math.random.toString()
             return [{ id: id, ...action.payload.data }, ...state]
+        case 'SET':
+            return action.payload.data
         case 'REMOVE':
             return state.filter((expense) => expense.id !== action.payload.id)
         case 'UPDATE':
@@ -67,13 +70,14 @@ function expensesReducer(state, action) {
 }
 
 const ExpensesContextProvider = ({ children }) => {
-    const [expensesState, dispatch] = useReducer(
-        expensesReducer,
-        EXPENSES_INITIAL_DATA
-    )
+    const [expensesState, dispatch] = useReducer(expensesReducer, [])
 
     function addExpense(expenseData) {
         dispatch({ type: 'ADD', payload: { data: expenseData } })
+    }
+
+    function setExpenses(expenses) {
+        dispatch({ type: 'SET', payload: { data: expenses } })
     }
 
     function removeExpense(expenseId) {
@@ -90,6 +94,7 @@ const ExpensesContextProvider = ({ children }) => {
     const value = {
         expenses: expensesState,
         addExpense: addExpense,
+        setExpenses: setExpenses,
         removeExpense: removeExpense,
         updateExpense: updateExpense,
     }

@@ -1,9 +1,10 @@
 import { View, StyleSheet } from 'react-native'
 import ExpensesView from '../components/expenses/ExpensesView'
-import { useLayoutEffect, useContext } from 'react'
+import { useLayoutEffect, useContext, useEffect } from 'react'
 import IconButton from '../components/ui/IconButton'
 
 import { ExpensesContext } from '../store/context/expenses-context'
+import { fetchExpenses } from '../util/http'
 
 function getDateMinusDays(date, days) {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate() - days)
@@ -12,6 +13,14 @@ function getDateMinusDays(date, days) {
 const ExpensesScreen = ({ route, navigation }) => {
     const expensesCtx = useContext(ExpensesContext)
     const period = route.params?.period
+
+    useEffect(() => {
+        async function getExpenses() {
+            const expenses = await fetchExpenses()
+            expensesCtx.setExpenses(expenses)
+        }
+        getExpenses()
+    }, [])
 
     const expensesData =
         period && period === 'recent'
