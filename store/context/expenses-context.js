@@ -8,39 +8,6 @@ export const ExpensesContext = createContext({
     updateExpense: (id, { description, date, amount }) => {},
 })
 
-const EXPENSES_INITIAL_DATA = [
-    { id: 0, description: 'mouse', date: new Date(), amount: 25 },
-    { id: 1, description: 'keyboard', date: new Date(), amount: 35 },
-    { id: 2, description: 'screen', date: new Date(), amount: 250 },
-    { id: 3, description: 'speakers', date: new Date(), amount: 150.89 },
-    { id: 4, description: 'computer', date: new Date(), amount: 1050.5 },
-    { id: 5, description: 'mouse', date: new Date('2021-12-01'), amount: 25 },
-    {
-        id: 6,
-        description: 'keyboard',
-        date: new Date('2021-12-01'),
-        amount: 35.67,
-    },
-    {
-        id: 7,
-        description: 'screen',
-        date: new Date('2021-12-01'),
-        amount: 250,
-    },
-    {
-        id: 8,
-        description: 'speakers',
-        date: new Date('2021-12-01'),
-        amount: 150.89,
-    },
-    {
-        id: 9,
-        description: 'computer',
-        date: new Date('2021-12-01'),
-        amount: 1050.5,
-    },
-]
-
 function expensesReducer(state, action) {
     switch (action.type) {
         case 'ADD':
