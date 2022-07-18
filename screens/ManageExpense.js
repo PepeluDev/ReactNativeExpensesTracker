@@ -6,9 +6,12 @@ import IconButton from '../components/ui/IconButton'
 import { ExpensesContext } from '../store/context/expenses-context'
 import { deleteExpense, storeExpense, updateExpense } from '../util/http'
 import LoadingOverlay from '../components/ui/LoadingOverlay'
+import ErrorOverlay from '../components/ui/ErrorOverlay'
 
 const ManageExpense = ({ route, navigation }) => {
     const [isSubmitting, setIsSubmitting] = useState(false)
+    const [error, setError] = useState()
+
     const expensesCtx = useContext(ExpensesContext)
 
     const expenseItemName = route.params?.description
@@ -27,11 +30,16 @@ const ManageExpense = ({ route, navigation }) => {
     }, [isAdding, navigation])
 
     async function deleteExpenseHandler() {
-        setIsSubmitting(true)
-        await deleteExpense(expenseItemId)
-        // setIsSubmitting(false) no need because we close the screen
-        expensesCtx.removeExpense(expenseItemId)
-        navigation.goBack()
+        try {
+            setIsSubmitting(true)
+            await deleteExpense(expenseItemId)
+            // setIsSubmitting(false) no need because we close the screen
+            expensesCtx.removeExpense(expenseItemId)
+            navigation.goBack()
+        } catch (error) {
+            setError('The expense could not be deleted.')
+        }
+        setIsSubmitting(false)
     }
 
     function cancelHandler() {
@@ -39,17 +47,35 @@ const ManageExpense = ({ route, navigation }) => {
     }
 
     async function confirmHandler(expenseData) {
-        setIsSubmitting(true)
-        const id = await storeExpense(expenseData)
-        expensesCtx.addExpense({ id: id, ...expenseData })
-        navigation.goBack()
+        try {
+            setIsSubmitting(true)
+            const id = await storeExpense(expenseData)
+            expensesCtx.addExpense({ id: id, ...expenseData })
+            navigation.goBack()
+        } catch (error) {
+            setError('The expense could not be added.')
+        }
+        setIsSubmitting(false)
     }
 
     async function editExpenseHandler(expenseData) {
-        setIsSubmitting(true)
-        await updateExpense(expenseItemId, expenseData)
-        expensesCtx.updateExpense(expenseItemId, expenseData)
-        navigation.goBack()
+        try {
+            setIsSubmitting(true)
+            await updateExpense(expenseItemId, expenseData)
+            expensesCtx.updateExpense(expenseItemId, expenseData)
+            navigation.goBack()
+        } catch (error) {
+            setError('The expense could not be edited.')
+        }
+        setIsSubmitting(false)
+    }
+
+    function errorHandler(params) {
+        setError(null)
+    }
+
+    if (error && !isSubmitting) {
+        return <ErrorOverlay message={error} onConfirm={errorHandler} />
     }
 
     if (isSubmitting) {
